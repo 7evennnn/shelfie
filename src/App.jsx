@@ -153,7 +153,7 @@ export default function App() {
     if (!searchQuery.trim()) return;
     setSearching(true);
     try {
-      const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(searchQuery)}&maxResults=6`);
+      const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(searchQuery)}&maxResults=6&key=AIzaSyCq9BdS9zKZ7dS9Ox3ubqOo8Aarn_GlNkc`);
       const data = await res.json();
       setSearchResults(data.items || []);
     } catch {

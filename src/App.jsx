@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import AuthorMap from './AuthorMap'
+import ShareButton from './ShareButton'
 
 const HARDCODED_PERCENTILES = [
   { books: 1, percentile: 33 },
@@ -410,7 +411,8 @@ export default function App() {
 
             {/* LIBRARY GRID */}
             {screen === "grid" && (
-              <div>
+              <>
+              <div id="card-library">
                 <div style={{ marginBottom: 32 }}>
                   <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 400, marginBottom: 8 }}>Your Library</h2>
                   <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "rgba(240,234,214,0.4)" }}>
@@ -446,12 +448,27 @@ export default function App() {
                      "A serious bibliophile."}
                   </p>
                 </div>
+                <div style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  marginTop: 24,
+                  paddingTop: 16,
+                  borderTop: "1px solid rgba(240,234,214,0.08)",
+                }}>
+                  <div style={{ textAlign: "right" }}>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontWeight: 700, letterSpacing: "0.02em" }}>shelfie</p>
+                    <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, color: "rgba(240,234,214,0.4)", letterSpacing: "0.1em" }}>shelfie.pages.dev</p>
+                  </div>
+                </div>
               </div>
+                <ShareButton targetId="card-library" filename="shelfie-library" />
+              </>
             )}
 
             {/* GENRE BREAKDOWN */}
             {screen === "genre" && (
-              <div>
+              <>
+              <div id="card-genre">
                 <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 400, marginBottom: 8 }}>Genre Breakdown</h2>
                 <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "rgba(240,234,214,0.4)", marginBottom: 40 }}>What kind of reader are you?</p>
                 {Object.keys(genreCount).length === 0 ? (
@@ -493,12 +510,27 @@ export default function App() {
                     </div>
                   </div>
                 )}
+                <div style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  marginTop: 24,
+                  paddingTop: 16,
+                  borderTop: "1px solid rgba(240,234,214,0.08)",
+                }}>
+                  <div style={{ textAlign: "right" }}>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontWeight: 700, letterSpacing: "0.02em" }}>shelfie</p>
+                    <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, color: "rgba(240,234,214,0.4)", letterSpacing: "0.1em" }}>shelfie.pages.dev</p>
+                  </div>
+                </div>
               </div>
+                <ShareButton targetId="card-genre" filename="shelfie-genres" />
+              </>
             )}
 
             {/* TROPHY */}
             {screen === "badge" && (
-              <div>
+              <>
+              <div id="card-trophy">
                 <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 400, marginBottom: 8 }}>Trophy Case</h2>
                 <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "rgba(240,234,214,0.4)", marginBottom: 40 }}>Your longest read deserves recognition.</p>
                 {!longestBook ? (
@@ -545,12 +577,27 @@ export default function App() {
                     </div>
                   </div>
                 )}
+                <div style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  marginTop: 24,
+                  paddingTop: 16,
+                  borderTop: "1px solid rgba(240,234,214,0.08)",
+                }}>
+                  <div style={{ textAlign: "right" }}>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontWeight: 700, letterSpacing: "0.02em" }}>shelfie</p>
+                    <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, color: "rgba(240,234,214,0.4)", letterSpacing: "0.1em" }}>shelfie.pages.dev</p>
+                  </div>
+                </div>
               </div>
+              <ShareButton targetId="card-trophy" filename="shelfie-trophy" />
+              </>
             )}
 
             {/* AUTHOR ORIGINS MAP */}
             {screen === "map" && (
-              <div>
+              <>
+              <div id="card-map">
                 <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 400, marginBottom: 8 }}>Author Origins</h2>
                 <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "rgba(240,234,214,0.4)", marginBottom: 24 }}>
                   Where in the world do your authors come from?
@@ -561,36 +608,57 @@ export default function App() {
                     setBooks(prev => prev.map(b => b.id === id ? { ...b, authorCountry: country } : b))
                   }
                 />
+                <div style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  marginTop: 24,
+                  paddingTop: 16,
+                  borderTop: "1px solid rgba(240,234,214,0.08)",
+                }}>
+                  <div style={{ textAlign: "right" }}>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontWeight: 700, letterSpacing: "0.02em" }}>shelfie</p>
+                    <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, color: "rgba(240,234,214,0.4)", letterSpacing: "0.1em" }}>shelfie.pages.dev</p>
+                  </div>
+                </div>
               </div>
+                <ShareButton targetId="card-map" filename="shelfie-map" />
+              </>
             )}
 
             {/* STATS */}
             {screen === "stats" && (
+              <>
               <div>
                 <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 400, marginBottom: 8 }}>Your Stats</h2>
                 <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "rgba(240,234,214,0.4)", marginBottom: 40 }}>How do you stack up?</p>
-                <div style={{ padding: "48px 32px", textAlign: "center", marginBottom: 32, background: "linear-gradient(135deg, rgba(240,234,214,0.03) 0%, rgba(240,234,214,0.07) 100%)", border: "1px solid rgba(240,234,214,0.1)" }}>
-                  <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "rgba(240,234,214,0.4)", letterSpacing: "0.15em", marginBottom: 16 }}>YOU'RE IN THE TOP</p>
-                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 80, fontWeight: 700, lineHeight: 1, color: "#f0ead6" }}>
-                    {100 - percentile}<span style={{ fontSize: 40 }}>%</span>
-                  </p>
-                  <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: "rgba(240,234,214,0.5)", marginTop: 16 }}>
-                    of readers worldwide — based on {books.length} book{books.length !== 1 ? "s" : ""} read
-                  </p>
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 32 }}>
-                  {[
-                    { label: "TOTAL PAGES", value: totalPages.toLocaleString(), sub: "pages turned" },
-                    { label: "READING TIME", value: `${totalHours}h`, sub: "hours spent reading" },
-                    { label: "WORDS READ", value: `${(totalWords / 1000).toFixed(0)}k`, sub: `≈ ${Math.round(totalWords / 77000)}× Harry Potter series` },
-                    { label: "BOOKS READ", value: books.length, sub: `better than ${percentile}% of people` },
-                  ].map(({ label, value, sub }) => (
-                    <div key={label} style={{ padding: "24px 20px", border: "1px solid rgba(240,234,214,0.1)", background: "rgba(240,234,214,0.02)" }}>
-                      <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, color: "rgba(240,234,214,0.4)", letterSpacing: "0.12em", marginBottom: 10 }}>{label}</p>
-                      <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 700 }}>{value}</p>
-                      <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "rgba(240,234,214,0.4)", marginTop: 6 }}>{sub}</p>
+                <div id="card-stats">  
+                  <div style={{ padding: "48px 32px", textAlign: "center", marginBottom: 32, background: "linear-gradient(135deg, rgba(240,234,214,0.03) 0%, rgba(240,234,214,0.07) 100%)", border: "1px solid rgba(240,234,214,0.1)" }}>
+                    <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "rgba(240,234,214,0.4)", letterSpacing: "0.15em", marginBottom: 16 }}>YOU'RE IN THE TOP</p>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 80, fontWeight: 700, lineHeight: 1, color: "#f0ead6" }}>
+                      {100 - percentile}<span style={{ fontSize: 40 }}>%</span>
+                    </p>
+                    <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: "rgba(240,234,214,0.5)", marginTop: 16 }}>
+                      of readers worldwide — based on {books.length} book{books.length !== 1 ? "s" : ""} read
+                    </p>
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 32 }}>
+                    {[
+                      { label: "TOTAL PAGES", value: totalPages.toLocaleString(), sub: "pages turned" },
+                      { label: "READING TIME", value: `${totalHours}h`, sub: "hours spent reading" },
+                      { label: "WORDS READ", value: `${(totalWords / 1000).toFixed(0)}k`, sub: `≈ ${Math.round(totalWords / 77000)}× Harry Potter series` },
+                      { label: "BOOKS READ", value: books.length, sub: `better than ${percentile}% of people` },
+                    ].map(({ label, value, sub }) => (
+                      <div key={label} style={{ padding: "24px 20px", border: "1px solid rgba(240,234,214,0.1)", background: "rgba(240,234,214,0.02)" }}>
+                        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, color: "rgba(240,234,214,0.4)", letterSpacing: "0.12em", marginBottom: 10 }}>{label}</p>
+                        <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 700 }}>{value}</p>
+                        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "rgba(240,234,214,0.4)", marginTop: 6 }}>{sub}</p>
+                      </div>
+                    ))}
+                  </div>
+                    <div style={{ textAlign: "right" }}>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontWeight: 700, letterSpacing: "0.02em" }}>shelfie</p>
+                    <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, color: "rgba(240,234,214,0.4)", letterSpacing: "0.1em" }}>shelfie.pages.dev</p>
                     </div>
-                  ))}
                 </div>
                 <div style={{ border: "1px solid rgba(240,234,214,0.1)", padding: 24 }}>
                   <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "rgba(240,234,214,0.4)", letterSpacing: "0.1em", marginBottom: 16 }}>READING LADDER</p>
@@ -611,7 +679,17 @@ export default function App() {
                 <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "rgba(240,234,214,0.25)", textAlign: "center", marginTop: 20, lineHeight: 1.6 }}>
                   Percentile estimates based on global reading surveys. Leaderboards coming soon.
                 </p>
+                <div style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  marginTop: 24,
+                  paddingTop: 16,
+                  borderTop: "1px solid rgba(240,234,214,0.08)",
+                }}>
+                </div>
               </div>
+                <ShareButton targetId="card-stats" filename="shelfie-stats" />
+              </>
             )}
 
           </div>

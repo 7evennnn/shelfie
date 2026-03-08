@@ -14,7 +14,8 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-simple-maps": "^3.0.0",
-    "world-atlas": "^2.0.2"
+    "world-atlas": "^2.0.2",
+    "html2canvas": "^1.4.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

@@ -52,6 +52,149 @@ function estimateWords(pages) {
   return pages * 275;
 }
 
+// Add these two components to App.jsx just above the BookRow component
+
+// 1. Small inline badge that shows on books with unconfirmed page counts
+// Usage: add next to the page count in BookRow's display view
+function UnconfirmedBadge({ onEdit }) {
+  const [showTip, setShowTip] = useState(false);
+
+  return (
+    <span style={{ position: "relative", display: "inline-block" }}>
+      <span
+        onClick={(e) => { e.stopPropagation(); setShowTip(!showTip); }}
+        style={{
+          display: "inline-flex", alignItems: "center", justifyContent: "center",
+          width: 14, height: 14, borderRadius: "50%",
+          background: "rgba(255,186,8,0.2)", border: "1px solid rgba(255,186,8,0.5)",
+          color: "#FFBA08", fontSize: 9, fontFamily: "'DM Mono', monospace",
+          cursor: "pointer", marginLeft: 4, fontWeight: 700,
+          flexShrink: 0,
+        }}
+      >
+        ?
+      </span>
+      {showTip && (
+        <div style={{
+          position: "absolute", bottom: "120%", left: "50%",
+          transform: "translateX(-50%)",
+          background: "#1a1a1a", border: "1px solid rgba(255,186,8,0.3)",
+          padding: "8px 12px", zIndex: 100, width: 180,
+          boxShadow: "0 4px 16px rgba(0,0,0,0.5)",
+        }}>
+          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "rgba(240,234,214,0.7)", lineHeight: 1.5, marginBottom: 8 }}>
+            Page count unconfirmed — this is an estimate.
+          </p>
+          <span
+            onClick={(e) => { e.stopPropagation(); onEdit(); setShowTip(false); }}
+            style={{
+              fontFamily: "'DM Mono', monospace", fontSize: 10,
+              color: "#FFBA08", cursor: "pointer", textDecoration: "underline",
+            }}
+          >
+            Edit page count
+          </span>
+          {/* Arrow */}
+          <div style={{
+            position: "absolute", bottom: -5, left: "50%",
+            width: 8, height: 8, background: "#1a1a1a",
+            border: "1px solid rgba(255,186,8,0.3)",
+            borderTop: "none", borderLeft: "none",
+            transform: "translateX(-50%) rotate(45deg)",
+          }} />
+        </div>
+      )}
+    </span>
+  );
+}
+
+// 2. Confirmation modal before generating shelfie
+// Usage: render in App, show when user hits Generate button
+function GenerateConfirmModal({ books, onConfirm, onCancel }) {
+  const unconfirmed = books.filter(b => b.pagesUnconfirmed);
+
+  return (
+    <div style={{
+      position: "fixed", inset: 0, zIndex: 1000,
+      background: "rgba(0,0,0,0.7)", backdropFilter: "blur(4px)",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      padding: 24,
+    }}
+      onClick={onCancel}
+    >
+      <div
+        style={{
+          background: "#111", border: "1px solid rgba(240,234,214,0.15)",
+          padding: "32px 28px", maxWidth: 420, width: "100%",
+          boxShadow: "0 24px 48px rgba(0,0,0,0.6)",
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#FFBA08", letterSpacing: "0.12em", marginBottom: 12 }}>
+          BEFORE YOU GENERATE
+        </p>
+        <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 700, marginBottom: 12, lineHeight: 1.3 }}>
+          Double-check your page counts
+        </h3>
+        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "rgba(240,234,214,0.5)", lineHeight: 1.7, marginBottom: 20 }}>
+          Some books may have inaccurate page counts from the API. Your stats are only as accurate as your data.
+        </p>
+
+        {unconfirmed.length > 0 && (
+          <div style={{ marginBottom: 20 }}>
+            <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "rgba(240,234,214,0.4)", letterSpacing: "0.1em", marginBottom: 10 }}>
+              {unconfirmed.length} BOOK{unconfirmed.length !== 1 ? "S" : ""} WITH UNCONFIRMED PAGES
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, maxHeight: 160, overflowY: "auto" }}>
+              {unconfirmed.map(book => (
+                <div key={book.id} style={{
+                  display: "flex", alignItems: "center", gap: 8,
+                  padding: "6px 10px", background: "rgba(255,186,8,0.05)",
+                  border: "1px solid rgba(255,186,8,0.15)",
+                }}>
+                  <div style={{ width: 3, height: 28, background: book.spineColor, flexShrink: 0 }} />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 12, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{book.title}</p>
+                    <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#FFBA08", marginTop: 1 }}>{book.pages}p — unconfirmed</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "rgba(240,234,214,0.4)", marginBottom: 20, lineHeight: 1.6 }}>
+          Hit <strong style={{ color: "#f0ead6" }}>Edit</strong> on any book to fix page counts, or generate anyway.
+        </p>
+
+        <label style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, cursor: "pointer" }}>
+          <input
+            type="checkbox"
+            onChange={e => {
+              if (e.target.checked) localStorage.setItem("skipGenerateWarning", "true");
+              else localStorage.removeItem("skipGenerateWarning");
+            }}
+            style={{ width: "auto", accentColor: "#f0ead6" }}
+          />
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "rgba(240,234,214,0.5)" }}>
+            Don't show again
+          </span>
+        </label>
+
+        <div style={{ display: "flex", gap: 10 }}>
+          <button className="btn-ghost" onClick={onCancel} style={{ flex: 1, padding: "12px", fontSize: 11 }}>
+            GO BACK & EDIT
+          </button>
+          <button className="btn-primary" onClick={onConfirm} style={{ flex: 1, padding: "12px", fontSize: 11 }}>
+            GENERATE ANYWAY
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 function BookRow({ book, onRemove, onUpdate }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState({
@@ -105,7 +248,9 @@ function BookRow({ book, onRemove, onUpdate }) {
           {book.title}
         </div>
         <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "rgba(240,234,214,0.4)", marginTop: 2 }}>
-          {book.author} · {book.pages}p · {book.genre}
+          {book.author} · {book.pages}p
+          {book.pagesUnconfirmed && <UnconfirmedBadge onEdit={() => setEditing(true)} />}
+          · {book.genre}
           {book.authorCountry ? ` · ${book.authorCountry}` : ""}
         </div>
       </div>
@@ -137,6 +282,7 @@ export default function App() {
   const [searching, setSearching] = useState(false);
   const [manualMode, setManualMode] = useState(false);
   const [manualBook, setManualBook] = useState({ title: "", author: "", pages: "", genre: "Fiction", authorCountry: "" });
+  const [showConfirm, setShowConfirm] = useState(false); // for confirming before generating shelfie
 
   const totalPages = books.reduce((s, b) => s + (b.pages || 250), 0);
   const totalWords = estimateWords(totalPages);
@@ -170,6 +316,7 @@ export default function App() {
       title: info.title || "Unknown",
       author: info.authors ? info.authors[0] : "Unknown Author",
       pages: info.pageCount || 250,
+      pagesUnconfirmed: !info.pageCount,
       genre: info.categories ? info.categories[0].split("/")[0].trim() : "Fiction",
       cover: info.imageLinks?.thumbnail?.replace("http://", "https://") || null,
       authorCountry: "",
@@ -378,7 +525,13 @@ export default function App() {
                   />
                 ))}
               </div>
-              <button className="btn-primary" onClick={() => setScreen("grid")} style={{ width: "100%", padding: "14px", fontSize: 13, letterSpacing: "0.08em" }}>
+              <button className="btn-primary" onClick={() => {
+                if (localStorage.getItem("skipGenerateWarning")) {
+                  setScreen("grid");
+                } else {
+                  setShowConfirm(true);
+                }
+              }} style={{ width: "100%", padding: "14px", fontSize: 13, letterSpacing: "0.08em" }}>
                 GENERATE MY SHELFIE →
               </button>
             </div>
@@ -394,6 +547,17 @@ export default function App() {
           )}
         </div>
       )}
+
+      {showConfirm && (
+        <GenerateConfirmModal
+          books={books}
+          onConfirm={() => { setShowConfirm(false); setScreen("grid"); }}
+          onCancel={() => setShowConfirm(false)}
+        />
+      )}
+
+
+
 
       {/* RESULTS SCREENS */}
       {screen !== "entry" && (

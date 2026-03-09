@@ -16,7 +16,7 @@ export default function ShareButton({ targetId, filename = "my-shelfie" }) {
       backgroundColor: "#0d0d0d",
       scale: 2, // retina quality
       useCORS: true, // needed for book cover images
-      allowTaint: false,
+      allowTaint: true,
     });
 
     return canvas;

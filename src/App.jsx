@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import AuthorMap from './AuthorMap'
 import ShareButton from './ShareButton'
+import { supabase } from './supabase'
 
 const HARDCODED_PERCENTILES = [
   { books: 1, percentile: 33 },
@@ -33,6 +34,7 @@ const SPINE_COLORS = [
   "#E9C46A","#264653","#E76F51","#2A9D8F","#F4A261",
   "#6D6875","#B5838D","#355070","#FFBA08","#3A86FF",
 ];
+
 
 function getPercentile(bookCount) {
   if (bookCount === 0) return 0;
@@ -296,6 +298,36 @@ export default function App() {
     return acc;
   }, {});
 
+  const [shelfiesCount, setShelfiesCount] = useState(0);
+  const [booksReadCount, setBooksReadCount] = useState(0);
+
+  useEffect(() => {
+    fetchCounters();
+  }, []);
+
+
+  async function fetchCounters() {
+  const { data, error } = await supabase
+    .from('counters')
+    .select('name, value');
+  
+  if (data) {
+    const shelfies = data.find(r => r.name === 'shelfies_generated')?.value || 0;
+    const booksRead = data.find(r => r.name === 'books_read')?.value || 0;
+    setShelfiesCount(shelfies);
+    setBooksReadCount(booksRead);
+  }
+}
+
+async function incrementCounters() {
+  await supabase.rpc('increment_counter', { counter_name: 'shelfies_generated' });
+  await supabase.rpc('increment_counter_by', { 
+    counter_name: 'books_read', 
+    amount: books.length 
+  });
+  fetchCounters();
+}
+
   async function handleSearch() {
     if (!searchQuery.trim()) return;
     setSearching(true);
@@ -551,7 +583,11 @@ export default function App() {
       {showConfirm && (
         <GenerateConfirmModal
           books={books}
-          onConfirm={() => { setShowConfirm(false); setScreen("grid"); }}
+          onConfirm={() => { 
+            setShowConfirm(false); 
+            setScreen("grid");
+            incrementCounters();
+          }}
           onCancel={() => setShowConfirm(false)}
         />
       )}
@@ -856,6 +892,67 @@ export default function App() {
               </>
             )}
 
+          </div>
+        </div>
+      )}
+      {shelfiesCount > 0 && (
+        <div style={{
+          position: "fixed",
+          right: 0,
+          top: "50%",
+          transform: "translateY(-50%)",
+          background: "rgba(13,13,13,0.9)",
+          border: "1px solid rgba(240,234,214,0.1)",
+          borderRight: "none",
+          padding: "16px 20px",
+          backdropFilter: "blur(8px)",
+          zIndex: 50,
+        }}>
+          <div style={{ marginBottom: 12 }}>
+            <p style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: 22,
+              fontWeight: 700,
+              textAlign: "center",
+            }}>
+              {shelfiesCount.toLocaleString()}
+            </p>
+            <p style={{
+              fontFamily: "'DM Mono', monospace",
+              fontSize: 9,
+              color: "rgba(240,234,214,0.4)",
+              letterSpacing: "0.1em",
+              textAlign: "center",
+              marginTop: 2,
+            }}>
+              SHELFIES MADE
+            </p>
+          </div>
+          <div style={{
+            width: "100%",
+            height: "1px",
+            background: "rgba(240,234,214,0.08)",
+            marginBottom: 12,
+          }} />
+          <div>
+            <p style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: 22,
+              fontWeight: 700,
+              textAlign: "center",
+            }}>
+              {booksReadCount.toLocaleString()}
+            </p>
+            <p style={{
+              fontFamily: "'DM Mono', monospace",
+              fontSize: 9,
+              color: "rgba(240,234,214,0.4)",
+              letterSpacing: "0.1em",
+              textAlign: "center",
+              marginTop: 2,
+            }}>
+              BOOKS TRACKED
+            </p>
           </div>
         </div>
       )}

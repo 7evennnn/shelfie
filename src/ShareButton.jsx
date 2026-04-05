@@ -12,6 +12,19 @@ export default function ShareButton({ targetId, filename = "my-shelfie" }) {
     const element = document.getElementById(targetId);
     if (!element) return null;
 
+    const WORKER_URL = "https://shelfieimagesproxy.adicutti21.workers.dev";
+    const images = element.querySelectorAll("img");
+    await Promise.all(Array.from(images).map((img) => {
+      if (img.src && img.src.includes("books.google")) {
+        return new Promise((resolve) => {
+          img.src = `${WORKER_URL}?url=${encodeURIComponent(img.src)}`;
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      }
+      return Promise.resolve();
+    }));
+
     const canvas = await html2canvas(element, {
       backgroundColor: "#0d0d0d",
       scale: 2, // retina quality

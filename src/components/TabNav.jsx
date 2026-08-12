@@ -5,10 +5,13 @@ const TABS = [
 ]
 
 export default function TabNav({ activeTab, onChange }) {
+  const activeIndex = TABS.findIndex((tab) => tab.id === activeTab)
+  const focusableTab = activeIndex === -1 ? 'identity' : activeTab
+
   function handleKeyDown(event) {
     if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return
     event.preventDefault()
-    const current = TABS.findIndex((tab) => tab.id === activeTab)
+    const current = Math.max(activeIndex, 0)
     const offset = event.key === 'ArrowRight' ? 1 : -1
     const next = (current + offset + TABS.length) % TABS.length
     onChange(TABS[next].id)
@@ -25,7 +28,7 @@ export default function TabNav({ activeTab, onChange }) {
           role="tab"
           aria-selected={activeTab === tab.id}
           aria-controls={`panel-${tab.id}`}
-          tabIndex={activeTab === tab.id ? 0 : -1}
+          tabIndex={focusableTab === tab.id ? 0 : -1}
           className={activeTab === tab.id ? 'tab-nav__button is-active' : 'tab-nav__button'}
           onClick={() => onChange(tab.id)}
         >

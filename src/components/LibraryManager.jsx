@@ -2,19 +2,16 @@ import { useState } from 'react'
 import BookEditor from './BookEditor'
 import BookSearch from './BookSearch'
 
-export default function LibraryManager({ books, onAdd, onUpdate, onRemove, onOpenImport, saveState }) {
+export default function LibraryManager({ books, onAdd, onUpdate, onRemove, onOpenImport }) {
   const [editingBook, setEditingBook] = useState(null)
 
   return (
     <section id="panel-library" role="tabpanel" aria-labelledby="tab-library" className="page-section library-page">
-      <header className="section-heading section-heading--split">
+      <header className="section-heading">
         <div>
           <p className="eyebrow">Books</p>
           <h1>Your reading log</h1>
           <p>Add books one at a time, or bring them over from a CSV!</p>
-        </div>
-        <div className="save-chip" data-state={saveState} aria-live="polite">
-          <span aria-hidden="true">●</span> {saveState === 'saving' ? 'Saving…' : saveState === 'error' ? 'Could not save' : 'On this device'}
         </div>
       </header>
 

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import ShareButton from './ShareButton'
 import { filterBooksForPeriod, formatCompactNumber, getReadingStats } from '../utils/reading'
+import { getRecapFilename } from '../utils/shareFilename'
 
 const MONTHS = new Intl.DateTimeFormat('en', { month: 'long' }).format
 
@@ -114,7 +115,7 @@ export default function ReportView({ books, readerName, onOpenLibrary }) {
               <strong>shelfie.pages.dev</strong>
             </footer>
           </article>
-          <div className="report-share"><ShareButton targetId="reading-report" filename={`shelfie-${period}-${year}${period === 'month' ? `-${month + 1}` : ''}`} label="Save recap" /></div>
+          <div className="report-share"><ShareButton targetId="reading-report" filename={getRecapFilename(period, year, month)} label="Save recap" /></div>
         </>
       )}
     </section>

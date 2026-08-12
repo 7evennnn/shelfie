@@ -47,7 +47,9 @@ export default function App() {
   }
 
   function importBooks(incoming) {
-    setBooks((current) => mergeLibraries(current, incoming))
+    const merged = mergeLibraries(books, incoming)
+    setBooks(merged)
+    return merged.length - books.length
   }
 
   return (

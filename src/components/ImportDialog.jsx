@@ -10,8 +10,13 @@ export default function ImportDialog({ onClose, onImport }) {
     if (!file) return
     try {
       const books = importBooksFromCsv(await file.text())
-      onImport(books)
-      setState({ status: 'success', message: `${books.length} book${books.length === 1 ? '' : 's'} imported.` })
+      const addedCount = onImport(books)
+      setState({
+        status: 'success',
+        message: addedCount
+          ? `${addedCount} book${addedCount === 1 ? '' : 's'} imported.`
+          : 'Those books are already in your library.',
+      })
     } catch (error) {
       setState({ status: 'error', message: error.message })
     }

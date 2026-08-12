@@ -24,13 +24,13 @@ cp .env.example .env
 npm run dev
 ```
 
-Open the local address printed by Vite. Environment values are optional for local use.
+Open the local address printed by Vite. The app runs without integrations, but Google Books search needs its API key.
 
 ## Configuration
 
 Copy `.env.example` to `.env` when you need optional integrations:
 
-- `VITE_GOOGLE_BOOKS_API_KEY`: optional restricted browser key. Google Books search also works keylessly, subject to Google's public quota.
+- `VITE_GOOGLE_BOOKS_API_KEY`: required for Google Books search. Restrict the browser key to the Books API and the origins that should use it.
 - `VITE_IMAGE_PROXY_URL`: optional Cloudflare Worker URL used to proxy Google Books covers during image export.
 - `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`: optional public browser configuration for aggregate counters.
 
@@ -51,6 +51,8 @@ npm run lint
 npm test
 npm run build
 ```
+
+Run all three automated gates together with `npm run release:check`. A successful build only proves that the production bundle was created; complete release QA also requires running that bundle and exercising the interaction checklist in [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md).
 
 Pull requests run the same checks in GitHub Actions.
 

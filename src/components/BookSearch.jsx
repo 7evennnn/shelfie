@@ -19,11 +19,16 @@ export default function BookSearch({ onAdd }) {
   async function handleSearch(event) {
     event.preventDefault()
     if (!query.trim()) return
+    const apiKey = import.meta.env?.VITE_GOOGLE_BOOKS_API_KEY?.trim()
+    if (!apiKey) {
+      setSearchState('unconfigured')
+      setResults([])
+      return
+    }
     setSearchState('loading')
     try {
       const params = new URLSearchParams({ q: query.trim(), maxResults: '6' })
-      const apiKey = import.meta.env?.VITE_GOOGLE_BOOKS_API_KEY
-      if (apiKey) params.set('key', apiKey)
+      params.set('key', apiKey)
       const response = await fetch(`https://www.googleapis.com/books/v1/volumes?${params}`)
       if (!response.ok) throw new Error('Search failed')
       const data = await response.json()
@@ -76,6 +81,7 @@ export default function BookSearch({ onAdd }) {
       </form>
 
       {searchState === 'empty' && <p className="form-note" role="status">No matches. Try a different search or enter it yourself.</p>}
+      {searchState === 'unconfigured' && <p className="form-error" role="alert">Book search isn’t set up on this copy of Shelfie. You can still enter the book yourself.</p>}
       {searchState === 'error' && <p className="form-error" role="alert">Search is unavailable. You can still enter the book yourself.</p>}
 
       {results.length > 0 && (

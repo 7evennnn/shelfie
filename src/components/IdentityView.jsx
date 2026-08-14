@@ -36,7 +36,7 @@ export default function IdentityView({ books, readerName, onReaderNameChange, on
           <label htmlFor="reader-name">Name on your card</label>
           <input id="reader-name" value={readerName} onChange={(event) => onReaderNameChange(event.target.value)} maxLength="40" />
           {books.length ? (
-            <ShareButton targetId="identity-card" filename={ALL_TIME_FILENAME} label="Share my card" />
+            <ShareButton targetId="identity-card" filename={ALL_TIME_FILENAME} label="Share my card" formatPicker />
           ) : (
             <button type="button" className="button button--ink" onClick={onOpenLibrary}>Add a book</button>
           )}

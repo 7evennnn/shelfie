@@ -28,10 +28,10 @@ At a desktop viewport, verify:
 
 - Card, Books and Recaps tabs work from the header; Books and Recaps also work from the footer.
 - Privacy & terms opens from the footer, its external policy links are reachable, and Back to Shelfie returns to the card.
-- The card name updates, a first book can be added, and the populated card downloads `shelfie_alltime.png`.
+- The card name updates, a first book can be added, and all three card exports complete: current `shelfie_alltime.png`, Story/TikTok `shelfie_alltime_story.png` at 1080x1920, and Instagram post `shelfie_alltime_post.png` at 1080x1350.
 - Book search covers a successful result, no-match result and failed/unconfigured request. Add one search result when the API is configured.
 - Manual entry opens and closes, required-title validation works, a valid book is added, editing can be cancelled and saved, and removal works.
-- CSV import can be cancelled, rejects an invalid file, accepts a valid file and does not duplicate an existing title-and-author pair.
+- CSV import can be cancelled, rejects an invalid file, accepts a valid file and does not duplicate an existing title-and-author pair. A Goodreads export imports only its `read` shelf, preserves slash-formatted calendar dates, and never labels reading statuses as genres.
 - The library survives a reload in the same browser.
 - Recaps switch between Month and Year, year/month selectors update the report, the empty state returns to Books, and populated recaps download the exact expected name: `shelfie_wrapped_[year].png` or `shelfie_wrapped_[mon]_[yy].png`.
 - Download/share failure is reported in the interface. If native file sharing is available, exercise success and cancellation; otherwise verify the PNG download fallback.

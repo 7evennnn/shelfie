@@ -91,7 +91,15 @@ h1, h2, h3, p { margin-top: 0; }
 .identity-controls__note > span { color: var(--orange); font: 500 21px/1 var(--mono); }
 .identity-controls__note p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
 .identity-controls__note strong { color: var(--ink); }
-.share-action { display: grid; gap: 10px; }
+.share-action { position: relative; display: grid; gap: 10px; }
+.share-action > .button { width: 100%; }
+.download-icon { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: square; stroke-linejoin: miter; }
+.share-format-menu { position: absolute; z-index: 40; top: calc(100% + 9px); right: 0; left: 0; min-width: 260px; padding: 5px; border: 1px solid var(--ink); background: var(--paper); box-shadow: 6px 6px 0 var(--blue); }
+.share-format-menu button { width: 100%; min-height: 58px; display: grid; gap: 5px; padding: 10px 12px; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--ink); text-align: left; cursor: pointer; }
+.share-format-menu button:last-child { border-bottom: 0; }
+.share-format-menu button:hover, .share-format-menu button:focus-visible { background: var(--acid); }
+.share-format-menu strong { font: 600 13px/1.2 var(--mono); }
+.share-format-menu span { color: var(--muted); font-size: 12px; }
 
 .identity-card { position: relative; padding: 34px; overflow: hidden; background: #efe5d2; border: 1px solid var(--ink); box-shadow: 14px 14px 0 #243e56; }
 .identity-card::after { content: none; }
@@ -352,6 +360,22 @@ input, select { min-height: 44px; padding: 10px 12px; border: 1px solid var(--in
   .policy-sheet p { font-size: 15px; }
   .policy-footer { align-items: flex-start; flex-direction: column; }
 }
+
+/* Keep social exports consistent across desktop and mobile viewports. */
+.identity-card.share-capture--fixed { width: 850px; max-width: none; padding: 34px; box-shadow: 14px 14px 0 var(--blue); }
+.identity-card.share-capture--fixed .identity-card__hero { min-height: 275px; grid-template-columns: 1fr auto; gap: 32px; }
+.identity-card.share-capture--fixed .identity-card__hero h2 { font-size: 64px; }
+.identity-card.share-capture--fixed .identity-card__seal { width: 118px; position: static; justify-self: auto; margin-top: 0; }
+.identity-card.share-capture--fixed .identity-card__seal strong { font-size: 44px; }
+.identity-card.share-capture--fixed .cover-stack { height: 220px; padding: 20px 28px 0; }
+.identity-card.share-capture--fixed .cover-stack img { width: 112px; height: 170px; }
+.identity-card.share-capture--fixed .identity-card__facts { grid-template-columns: repeat(4, 1fr); }
+.identity-card.share-capture--fixed .identity-card__facts > div,
+.identity-card.share-capture--fixed .identity-card__facts > div:nth-child(2) { border-right: 1px solid var(--ink); border-bottom: 0; }
+.identity-card.share-capture--fixed .identity-card__facts > div:last-child { border-right: 0; }
+.identity-card.share-capture--fixed .taste-row { grid-template-columns: 28px minmax(100px, .8fr) 1.5fr 24px; gap: 12px; }
+.identity-card.share-capture--fixed .identity-card__footer { align-items: center; }
+.identity-card.share-capture--fixed .identity-card__footer span { max-width: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

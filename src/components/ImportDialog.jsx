@@ -30,7 +30,7 @@ export default function ImportDialog({ onClose, onImport }) {
     >
       <div className="import-guide">
         <div><span>01</span><p>Your file needs <strong>title</strong> and <strong>author</strong> columns.</p></div>
-        <div><span>02</span><p>Pages, genre, finish date, author country and cover URL are optional.</p></div>
+        <div><span>02</span><p>Pages, genre, finish date, author country and cover URL are optional. Goodreads shelves are only used when they match a genre.</p></div>
         <div><span>03</span><p>Duplicate title-and-author pairs are skipped.</p></div>
       </div>
       <label className="file-drop">

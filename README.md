@@ -2,6 +2,8 @@
 
 Shelfie turns your reading history into a living identity card and beautiful monthly or annual reports. It is accountless by design: books are stored in the browser on the device where they were added.
 
+Check it out @ shelfie.pages.dev today!
+
 ## Why it exists
 
 Reading apps are good at maintaining lists. Shelfie is for the moment after the list: seeing the shape of your taste and making something beautiful enough to keep or share.

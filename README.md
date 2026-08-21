@@ -2,7 +2,7 @@
 
 Shelfie turns your reading history into a living identity card and beautiful monthly or annual reports. It is accountless by design: books are stored in the browser on the device where they were added.
 
-Check it out @ (shelfie.pages.dev)[shelfie.pages.dev] today!
+Check it out @ shelfie.pages.dev[shelfie.pages.dev] today!
 
 ## Why it exists
 
